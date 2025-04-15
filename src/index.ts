@@ -1,9 +1,15 @@
-import { serve } from '@hono/node-server'
+import { serve, type HttpBindings } from '@hono/node-server'
 import { Hono } from 'hono'
 
-const app = new Hono()
+type Bindings = HttpBindings & {
+  /* ... */
+}
+
+const app = new Hono<{ Bindings: Bindings }>()
 
 app.get('/', (c) => {
+  //输出客户端ip地址
+  console.log('client ip:', c.env.incoming.socket.remoteAddress)
   //返回测试json
   return c.json({
     message: 'Hello Hono!'
